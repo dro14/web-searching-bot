@@ -1,7 +1,10 @@
 FROM python:3.10.12-slim
 
-RUN apt-get update && apt-get install -y \
-    wget \
+RUN apt-get update
+RUN apt-get intall -y wget
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+RUN apt-get install -y \
     fonts-liberation \
     libasound2 \
     libatk-bridge2.0-0 \
@@ -30,10 +33,10 @@ RUN apt-get update && apt-get install -y \
     xdg-utils \
     libvulkan1 \
     gcc \
-    && rm -rf /var/lib/apt/lists/*
+    ./google-chrome-stable_current_amd64.deb
 
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
 RUN rm google-chrome-stable_current_amd64.deb
 
 WORKDIR /app
