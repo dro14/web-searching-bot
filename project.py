@@ -56,7 +56,7 @@ def main():
 
 
 def make_url(query):
-    return "https://www.google.co.uz/search?gl=uz&hl=en&num=10&q=" + quote(query)
+    return "https://www.google.com/search?&hl=en&num=10&q=" + quote(query)
 
 
 def clean_data(elements):
