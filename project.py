@@ -94,7 +94,7 @@ def clean_data(elements):
 def google_search(query):
     driver.get(make_url(query))
     driver.implicitly_wait(30)
-    return driver.find_elements(By.CLASS_NAME, "MjjYud")
+    return driver.find_elements(By.CLASS_NAME, "rc")
 
 
 if __name__ == '__main__':
