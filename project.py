@@ -26,6 +26,7 @@ service = Service(GeckoDriverManager().install())
 options = FirefoxOptions()
 options.add_argument("--headless")
 driver = Firefox(service=service, options=options)
+driver.implicitly_wait(1)
 
 app = Client(
     "my_account",
@@ -93,7 +94,6 @@ def clean_data(elements):
 
 def google_search(query):
     driver.get(make_url(query))
-    driver.implicitly_wait(30)
     try:
         driver.find_element(By.ID, "L2AGLb").click()
     except NoSuchElementException:
