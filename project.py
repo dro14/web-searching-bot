@@ -94,7 +94,10 @@ def clean_data(elements):
 def google_search(query):
     driver.get(make_url(query))
     driver.implicitly_wait(30)
-    return driver.find_elements(By.CLASS_NAME, "rc")
+    accept_cookies = driver.find_element(By.ID, "L2AGLb")
+    if accept_cookies:
+        accept_cookies.click()
+    return driver.find_elements(By.CLASS_NAME, "MjjYud")
 
 
 if __name__ == '__main__':
