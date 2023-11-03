@@ -94,9 +94,10 @@ def clean_data(elements):
 def google_search(query):
     driver.get(make_url(query))
     driver.implicitly_wait(30)
-    accept_cookies = driver.find_element(By.ID, "L2AGLb")
-    if accept_cookies:
-        accept_cookies.click()
+    try:
+        driver.find_element(By.ID, "L2AGLb").click()
+    except NoSuchElementException:
+        pass
     return driver.find_elements(By.CLASS_NAME, "MjjYud")
 
 
