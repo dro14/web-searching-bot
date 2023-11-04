@@ -2,7 +2,9 @@ FROM python:3.10.12-slim
 
 RUN apt-get update -y && apt-get install -y \
     firefox-esr \
-    gcc\
+    wget \
+    gcc \
+    tar \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 RUN wget https://github.com/mozilla/geckodriver/releases/latest/download/geckodriver-v0.33.0-linux64.tar.gz \
@@ -15,6 +17,6 @@ COPY . .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 80
+EXPOSE 8000
 
 CMD ["python", "project.py"]

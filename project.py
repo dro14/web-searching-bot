@@ -3,8 +3,8 @@ from selenium.webdriver import Firefox, FirefoxOptions
 from selenium.webdriver.common.by import By
 from pyrogram import Client, filters, idle
 from pyrogram.enums import ParseMode
+from fastapi import FastAPI, Request
 from urllib.parse import quote
-from fastapi import FastAPI
 from uvicorn import run
 from os import environ
 from re import match
@@ -55,7 +55,7 @@ app_fastapi = FastAPI()
 
 
 @app_fastapi.post("/search")
-async def search_endpoint(request):
+async def search_endpoint(request: Request):
     data = await request.json()
     query = data["query"]
     if query:
@@ -68,7 +68,7 @@ async def search_endpoint(request):
 
 def main():
     app.start()
-    run(app_fastapi, port=80)
+    run(app_fastapi)
     idle()
 
 
