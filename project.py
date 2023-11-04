@@ -1,6 +1,4 @@
 from selenium.common.exceptions import NoSuchElementException
-from webdriver_manager.firefox import GeckoDriverManager
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver import Firefox, FirefoxOptions
 from selenium.webdriver.common.by import By
 from pyrogram import Client, filters, idle
@@ -24,10 +22,9 @@ REDUNDANT_LINES = (
     r"^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s([1-9]|[12][0-9]|3[01]),\s\d{4}$",
 )
 
-service = Service(GeckoDriverManager().install())
 options = FirefoxOptions()
 options.add_argument("--headless")
-driver = Firefox(service=service, options=options)
+driver = Firefox(options=options)
 driver.implicitly_wait(1)
 
 app = Client(
