@@ -3,9 +3,11 @@ from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver import Firefox, FirefoxOptions
 from selenium.webdriver.common.by import By
-from pyrogram import Client, filters
+from pyrogram import Client, filters, idle
 from pyrogram.enums import ParseMode
 from urllib.parse import quote
+from fastapi import FastAPI
+from uvicorn import run
 from os import environ
 from re import match
 
@@ -52,8 +54,25 @@ def search(_, message):
     )
 
 
+app_fastapi = FastAPI()
+
+
+@app_fastapi.post("/search")
+async def search_endpoint(request):
+    data = await request.json()
+    query = data["query"]
+    if query:
+        elements = google_search(query)
+        results = clean_data(elements)
+        return {"results": results}
+    else:
+        return {"error": "No query provided"}
+
+
 def main():
-    app.run()
+    app.start()
+    run(app_fastapi, port=80)
+    idle()
 
 
 def make_url(query):
