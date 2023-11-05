@@ -34,7 +34,7 @@ jobs:
           registryUsername: ${{ secrets.WEBSEARCHINGBOT_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.WEBSEARCHINGBOT_REGISTRY_PASSWORD }}
           containerAppName: web-searching-bot
-          resourceGroup: yordamchi
+          resourceGroup: Yordamchi
           imageToBuild: dro14/web-searching-bot:${{ github.sha }}
           
 
