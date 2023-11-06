@@ -1,11 +1,9 @@
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import Firefox, FirefoxOptions
 from selenium.webdriver.common.by import By
-from pyrogram import Client, filters, idle
+from pyrogram import Client, filters
 from pyrogram.enums import ParseMode
-from fastapi import FastAPI, Request
 from urllib.parse import quote
-from uvicorn import run
 from os import environ
 from re import match
 
@@ -43,7 +41,8 @@ def start(_, message):
 
 @app.on_message(filters.private & filters.text)
 def search(_, message):
-    elements = google_search(message.text)
+    url = make_url(message.text)
+    elements = google_search(url)
     results = clean_data(elements)
     message.reply_text(
         results[:4096],
@@ -51,32 +50,24 @@ def search(_, message):
     )
 
 
-app_fastapi = FastAPI()
-
-
-@app_fastapi.post("/search")
-async def search_endpoint(request: Request):
-    data = await request.json()
-    query = data["query"]
-    if query:
-        elements = google_search(query)
-        results = clean_data(elements)
-        return {"results": results}
-    else:
-        return {"error": "No query provided"}
-
-
 def main():
-    app.start()
-    run(app_fastapi)
-    idle()
+    app.run()
 
 
 def make_url(query):
-    return "https://www.google.com/search?&hl=en&num=10&q=" + quote(query)
+    return "https://www.google.com/search?hl=en&num=10&q=" + quote(query)
 
 
-def clean_data(elements):
+def google_search(url):
+    driver.get(url)
+    try:
+        driver.find_element(By.ID, "L2AGLb").click()
+    except NoSuchElementException:
+        pass
+    return driver.find_elements(By.CLASS_NAME, "MjjYud")
+
+
+def clean_data(elements, with_links=True):
     results = []
     for element in elements:
         redundant_elements = ("People also ask", "Related searches", "Related search", "Images", "Videos")
@@ -95,27 +86,19 @@ def clean_data(elements):
                     break
             i += 1
 
-        try:
-            link = element.find_element(By.CSS_SELECTOR, "a").get_attribute("href")
-        except NoSuchElementException:
-            link = None
+        if with_links:
+            try:
+                link = element.find_element(By.CSS_SELECTOR, "a").get_attribute("href")
+            except NoSuchElementException:
+                link = None
 
-        if link:
-            lines.append(link)
+            if link:
+                lines.append(link)
 
         results.append("\n".join(lines))
 
     return "\n\n".join(results)
 
 
-def google_search(query):
-    driver.get(make_url(query))
-    try:
-        driver.find_element(By.ID, "L2AGLb").click()
-    except NoSuchElementException:
-        pass
-    return driver.find_elements(By.CLASS_NAME, "MjjYud")
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
