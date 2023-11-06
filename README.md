@@ -7,8 +7,7 @@ This repository contains the source code for a Telegram bot that integrates with
 - [Features](#features)
 - [Installing](#installing)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+- [Disclaimer](#disclaimer)
 
 ## Features
 
